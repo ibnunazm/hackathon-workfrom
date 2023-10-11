@@ -1,6 +1,11 @@
 import { Sequelize } from 'sequelize';
 import db from '../config/Database.js';
 import Users from './UserModel.js';
+import Categories from './CategoryModel.js';
+import Subcategories from './SubcategoryModel.js';
+import Time from './TimeModel.js';
+import Amenities from './AmenitiesModel.js';
+import Facilities from './FacilitiesModel.js';
 
 const { DataTypes } = Sequelize;
 
@@ -14,6 +19,36 @@ const Properties = db.define('properties', {
         }
     },
     userId:{
+        type: DataTypes.INTEGER,
+        validate: {
+            notEmpty: true,
+        }
+    },
+    categoryId:{
+        type: DataTypes.INTEGER,
+        validate: {
+            notEmpty: true,
+        }
+    },
+    subcategoryId:{
+        type: DataTypes.INTEGER,
+        validate: {
+            notEmpty: true,
+        }
+    },
+    timeId:{
+        type: DataTypes.INTEGER,
+        validate: {
+            notEmpty: true,
+        }
+    },
+    amenityId:{
+        type: DataTypes.INTEGER,
+        validate: {
+            notEmpty: true,
+        }
+    },
+    facilityId:{
         type: DataTypes.INTEGER,
         validate: {
             notEmpty: true,
@@ -131,5 +166,15 @@ const Properties = db.define('properties', {
 
 Users.hasMany(Properties);
 Properties.belongsTo(Users, {foreignKey: 'userId'});
+Categories.hasMany(Properties);
+Properties.belongsTo(Categories, {foreignKey: 'categoryId'});
+Subcategories.hasMany(Properties);
+Properties.belongsTo(Subcategories, {foreignKey: 'subcategoryId'});
+Time.hasMany(Properties);
+Properties.belongsTo(Time, {foreignKey: 'timeId'});
+Amenities.hasMany(Properties);
+Properties.belongsTo(Amenities, {foreignKey: 'amenityId'});
+Facilities.hasMany(Properties);
+Properties.belongsTo(Facilities, {foreignKey: 'facilityId'});
 
 export default Properties;

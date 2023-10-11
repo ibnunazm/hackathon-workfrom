@@ -8,6 +8,11 @@ import SequelizeStore from 'connect-session-sequelize';
 import UserRoute from './routes/UserRoute.js';
 import PropertyRoute from './routes/PropertyRoute.js';
 import AuthRoute from './routes/AuthRoute.js';
+import CategoryRoute from './routes/CategoryRoute.js'
+import SubcategoryRoute from './routes/SubcategoryRoute.js';
+import TimeRoute from './routes/TimeRoute.js';
+import FacilitiesRoute from './routes/FacilitiesRoute.js';
+import AmenitiesRoute from './routes/AmenitiesRoute.js';
 
 dotenv.config()
 
@@ -35,12 +40,18 @@ app.use(cors({
     credentials: true,
     origin: 'http://localhost:5173'
 }));
+
 app.use(fileUpload());
 app.use(express.static('public'));
 app.use(express.json())
 app.use(UserRoute);
 app.use(PropertyRoute);
 app.use(AuthRoute);
+app.use(CategoryRoute);
+app.use(SubcategoryRoute);
+app.use(TimeRoute);
+app.use(FacilitiesRoute);
+app.use(AmenitiesRoute);
 
 store.sync();
 

@@ -1,5 +1,8 @@
 import Properties from "../models/PropertyModel.js";
 import Users from "../models/UserModel.js";
+import Categories from "../models/CategoryModel.js";
+import Subcategories from "../models/SubcategoryModel.js";
+import Time from "../models/TimeModel.js";
 import path from "path";
 import fs from "fs";
 
@@ -11,6 +14,7 @@ export const getProperties = async (req, res) => {
         include: [
           {
             model: Users,
+            attributes: { exclude: ["password"] },
             where: {
               uuid: req.userId,
             },
@@ -22,6 +26,7 @@ export const getProperties = async (req, res) => {
         include: [
           {
             model: Users,
+            attributes: { exclude: ["password"] },
           },
         ],
       });
@@ -75,6 +80,24 @@ export const createProperty = async (req, res) => {
     const user = await Users.findOne({
       where: {
         uuid: req.userId,
+      },
+    });
+
+    const category = await Categories.findOne({
+      where: {
+        uuid: req.body.categoryId,
+      },
+    });
+
+    const subcategory = await Subcategories.findOne({
+      where: {
+        uuid: req.body.subcategoryId,
+      },
+    });
+
+    const time = await Time.findOne({
+      where: {
+        uuid: req.body.timeId,
       },
     });
 
@@ -133,6 +156,9 @@ export const createProperty = async (req, res) => {
       isVerify,
       isReady,
       userId: user.id,
+      categoryId: category.id,
+      subcategoryId: subcategory.id,
+      timeId: time.id,
     });
 
     res.status(201).json({ message: "Property created successfully" });
@@ -175,6 +201,24 @@ export const updateProperty = async (req, res) => {
   const user = await Users.findOne({
     where: {
       uuid: req.userId,
+    },
+  });
+
+  const category = await Categories.findOne({
+    where: {
+      uuid: req.body.categoryId,
+    },
+  });
+
+  const subcategory = await Subcategories.findOne({
+    where: {
+      uuid: req.body.subcategoryId,
+    },
+  });
+
+  const time = await Time.findOne({
+    where: {
+      uuid: req.body.timeId,
     },
   });
 
@@ -239,6 +283,9 @@ export const updateProperty = async (req, res) => {
       isVerify,
       isReady,
       userId: user.id,
+      categoryId: category.id,
+      subcategoryId: subcategory.id,
+      timeId: time.id,
     },
     {
       where: {
