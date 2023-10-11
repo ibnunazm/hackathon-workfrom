@@ -75,29 +75,16 @@ export const createProperty = async (req, res) => {
       longitude,
       isVerify,
       isReady,
+      categoryId,
+      subcategoryId,
+      timeId,
+      amenitiesId,
+      facilitiesId
     } = req.body;
 
     const user = await Users.findOne({
       where: {
         uuid: req.userId,
-      },
-    });
-
-    const category = await Categories.findOne({
-      where: {
-        uuid: req.body.categoryId,
-      },
-    });
-
-    const subcategory = await Subcategories.findOne({
-      where: {
-        uuid: req.body.subcategoryId,
-      },
-    });
-
-    const time = await Time.findOne({
-      where: {
-        uuid: req.body.timeId,
       },
     });
 
@@ -156,9 +143,11 @@ export const createProperty = async (req, res) => {
       isVerify,
       isReady,
       userId: user.id,
-      categoryId: category.id,
-      subcategoryId: subcategory.id,
-      timeId: time.id,
+      categoryId,
+      subcategoryId,
+      timeId,
+      amenitiesId,
+      facilitiesId
     });
 
     res.status(201).json({ message: "Property created successfully" });
@@ -196,29 +185,16 @@ export const updateProperty = async (req, res) => {
     longitude,
     isVerify,
     isReady,
+    categoryId,
+    subcategoryId,
+    timeId,
+    amenitiesId,
+    facilitiesId
   } = req.body;
 
   const user = await Users.findOne({
     where: {
       uuid: req.userId,
-    },
-  });
-
-  const category = await Categories.findOne({
-    where: {
-      uuid: req.body.categoryId,
-    },
-  });
-
-  const subcategory = await Subcategories.findOne({
-    where: {
-      uuid: req.body.subcategoryId,
-    },
-  });
-
-  const time = await Time.findOne({
-    where: {
-      uuid: req.body.timeId,
     },
   });
 
@@ -283,9 +259,11 @@ export const updateProperty = async (req, res) => {
       isVerify,
       isReady,
       userId: user.id,
-      categoryId: category.id,
-      subcategoryId: subcategory.id,
-      timeId: time.id,
+      categoryId,
+      subcategoryId,
+      timeId,
+      amenitiesId,
+      facilitiesId
     },
     {
       where: {

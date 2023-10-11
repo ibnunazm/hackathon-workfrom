@@ -6,13 +6,14 @@ import {
     updateFacility,
     deleteFacility
 } from '../controllers/FacilitiesController.js';
+import { adminAndOwnerOnly, verifyUser } from '../middleware/AuthUser.js';
 
 const router = express.Router();
 
-router.get('/facilities', getFacilities);
-router.get('/facilities/:id', getFacilityById);
-router.post('/facilities', createFacility);
-router.patch('/facilities/:id', updateFacility);
-router.delete('/facilities/:id', deleteFacility);
+router.get('/facilities', verifyUser, adminAndOwnerOnly, getFacilities);
+router.get('/facilities/:id', verifyUser, adminAndOwnerOnly, getFacilityById);
+router.post('/facilities', verifyUser, adminAndOwnerOnly, createFacility);
+router.patch('/facilities/:id', verifyUser, adminAndOwnerOnly, updateFacility);
+router.delete('/facilities/:id', verifyUser, adminAndOwnerOnly, deleteFacility);
 
 export default router;

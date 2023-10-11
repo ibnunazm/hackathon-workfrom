@@ -6,13 +6,14 @@ import {
     updateAmenity,
     deleteAmenity
 } from '../controllers/AmenitiesController.js';
+import { adminAndOwnerOnly, verifyUser } from '../middleware/AuthUser.js';
 
 const router = express.Router();
 
-router.get('/amenities', getAmenities);
-router.get('/amenities/:id', getAmenityById);
-router.post('/amenities', createAmenity);
-router.patch('/amenities/:id', updateAmenity);
-router.delete('/amenities/:id', deleteAmenity);
+router.get('/amenities', verifyUser, adminAndOwnerOnly, getAmenities);
+router.get('/amenities/:id', verifyUser, adminAndOwnerOnly, getAmenityById);
+router.post('/amenities', verifyUser, adminAndOwnerOnly, createAmenity);
+router.patch('/amenities/:id', verifyUser, adminAndOwnerOnly, updateAmenity);
+router.delete('/amenities/:id', verifyUser, adminAndOwnerOnly, deleteAmenity);
 
 export default router;

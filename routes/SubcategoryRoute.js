@@ -6,13 +6,14 @@ import {
     updateSubcategory,
     deleteSubcategory
 } from '../controllers/SubcategoryController.js';
+import { adminAndOwnerOnly, verifyUser } from '../middleware/AuthUser.js';
 
 const router = express.Router();
 
-router.get('/subcategories', getSubcategories);
-router.get('/subcategories/:id', getSubcategoryById);
-router.post('/subcategories', createSubcategory);
-router.patch('/subcategories/:id', updateSubcategory);
-router.delete('/subcategories/:id', deleteSubcategory);
+router.get('/subcategories', verifyUser, adminAndOwnerOnly, getSubcategories);
+router.get('/subcategories/:id', verifyUser, adminAndOwnerOnly, getSubcategoryById);
+router.post('/subcategories', verifyUser, adminAndOwnerOnly, createSubcategory);
+router.patch('/subcategories/:id', verifyUser, adminAndOwnerOnly, updateSubcategory);
+router.delete('/subcategories/:id', verifyUser, adminAndOwnerOnly, deleteSubcategory);
 
 export default router;
