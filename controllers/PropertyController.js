@@ -5,34 +5,42 @@ import fs from "fs";
 
 export const getProperties = async (req, res) => {
   try {
-    let response;
-    if (req.role === "admin") {
-      response = await Properties.findAll({
-        include: [
-          {
-            model: Users,
-          },
-        ],
-      });
-    } else {
-      response = await Properties.findAll({
-        where: {
-          userId: req.userId,
+    const response = await Properties.findAll({
+      include: [
+        {
+          model: Users,
         },
-        include: [
-          {
-            model: Users,
-          },
-        ],
-      });
-    }
+      ],
+    });
     return res.status(200).json(response);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
-export const getPropertyById = async (req, res) => {};
+export const getPropertyById = async (req, res) => {
+  try {
+    const response = await Properties.findOne({
+      where: {
+        uuid: req.params.id,
+      },
+      include: [
+        {
+          model: Users,
+          attributes: { exclude: ["password"] },
+        },
+      ],
+    });
+
+    if (!response) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    return res.status(200).json(response);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
 
 export const createProperty = async (req, res) => {
   try {
@@ -119,14 +127,13 @@ export const createProperty = async (req, res) => {
   }
 };
 
-export const updateProperty = async (req, res) => {
+export const updateProperty = async (req, res) => {};
 
-};
 export const deleteProperty = async (req, res) => {
   try {
     const property = await Properties.findOne({
       where: {
-        id: req.params.id,
+        uuid: req.params.id,
       },
     });
 
@@ -138,16 +145,18 @@ export const deleteProperty = async (req, res) => {
     const ownershipCertificate = property.ownershipCertificate;
 
     fs.unlinkSync(`./public/images/property/${propertyImage}`);
-    fs.unlinkSync(`./public/images/ownershipCertificate/${ownershipCertificate}`);
+    fs.unlinkSync(
+      `./public/images/ownershipCertificate/${ownershipCertificate}`
+    );
 
     await Properties.destroy({
       where: {
-        id: req.params.id,
+        uuid: req.params.id,
       },
     });
 
     return res.status(200).json({ message: "Property deleted successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
-  } 
+  }
 };

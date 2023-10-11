@@ -6,14 +6,14 @@ import {
     updateProperty,
     deleteProperty
 } from '../controllers/PropertyController.js';
-import { verifyUser } from '../middleware/AuthUser.js';
+import { ownerOnly, verifyUser } from '../middleware/AuthUser.js';
 
 const router = express.Router();
 
 router.get('/properties', verifyUser, getProperties);
 router.get('/properties/:id', verifyUser, getPropertyById);
-router.post('/properties', verifyUser, createProperty);
-router.patch('/properties/:id', verifyUser, updateProperty);
-router.delete('/properties/:id', verifyUser, deleteProperty);
+router.post('/properties', verifyUser, ownerOnly, createProperty);
+router.patch('/properties/:id', verifyUser, ownerOnly, updateProperty);
+router.delete('/properties/:id', verifyUser, ownerOnly, deleteProperty);
 
 export default router;
