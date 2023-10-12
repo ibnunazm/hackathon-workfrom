@@ -206,7 +206,9 @@ function Dashboard() {
                                     <p>Jakarta</p>
                                 </div>
                                 <p>Kawasan, Jl. Mega Kuningan Barat Jl. DR. Ide Anak Agung Gde Agung No.1, RT.5/RW.2, Kuningan, Kuningan Tim., Kecamatan Setiabudi, 12950</p>
-                                <button>Lihat Detail</button>
+                                <div>
+                                    <button className='text-[18px] font-[500] bg-[#AFF78D] text-black py-2 px-6 rounded-md'>Lihat detail</button>
+                                </div>
                             </div>
                         </div>
                         <div className='rounded-3xl  overflow-hidden'>
@@ -220,11 +222,13 @@ function Dashboard() {
                                     <p>Jakarta</p>
                                 </div>
                                 <p>Kawasan, Jl. Mega Kuningan Barat Jl. DR. Ide Anak Agung Gde Agung No.1, RT.5/RW.2, Kuningan, Kuningan Tim., Kecamatan Setiabudi, 12950</p>
-                                <button>Lihat Detail</button>
+                                <div>
+                                    <button className='text-[18px] font-[500] bg-[#AFF78D] text-black py-2 px-6 rounded-md'>Lihat detail</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className='flex justify-center'>
+                    <div className='flex justify-center mt-16'>
                         <button className='text-[18px] font-[500] bg-[#AFF78D] text-black py-2 px-10 rounded-md'>Lihat semua <i>space</i></button>
                     </div>
                 </div>
