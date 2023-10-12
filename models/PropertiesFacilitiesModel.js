@@ -1,9 +1,11 @@
 import { Sequelize } from 'sequelize';
 import db from '../config/Database.js';
+import Properties from './PropertyModel.js';
+import Facilities from './FacilitiesModel.js';
 
 const { DataTypes } = Sequelize;
 
-const Facilities = db.define('facilities', {
+const PropertiesFacilities = db.define('properties_facilities', {
     uuid: {
         type: DataTypes.STRING,
         defaultValue: DataTypes.UUIDV4,
@@ -12,15 +14,14 @@ const Facilities = db.define('facilities', {
             notEmpty: true,
         }
     },
-    optionName: {
-        type: DataTypes.STRING,
+    propertyId:{
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             notEmpty: true,
-            len: [3, 100]
         }
     },
-    distance: {
+    facilityId:{
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -31,4 +32,10 @@ const Facilities = db.define('facilities', {
     freezeTableName: true,
 });
 
-export default Facilities;
+Properties.hasMany(PropertiesFacilities);
+PropertiesFacilities.belongsTo(Properties, {foreignKey: 'propertyId'});
+Facilities.hasMany(PropertiesFacilities);
+PropertiesFacilities.belongsTo(Facilities, {foreignKey: 'facilityId'});
+
+
+export default PropertiesFacilities;

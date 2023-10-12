@@ -4,10 +4,11 @@ import Subcategories from "../models/SubcategoryModel.js";
 export const getCategories = async (req, res) => {
     try {
         const response = await Categories.findAll({
+            attributes: { exclude: ["uuid", "createdAt", "updatedAt"] },
             include: [
                 {
                     model: Subcategories,
-                    attributes: { exclude: ["createdAt", "updatedAt"] },
+                    attributes: { exclude: ["categoryId", "uuid", "createdAt", "updatedAt"] },
                 },
             ],
         });
@@ -23,10 +24,11 @@ export const getCategoryById = async (req, res) => {
             where: {
                 id: req.params.id,
             },
+            attributes: { exclude: ["uuid", "createdAt", "updatedAt"] },
             include: [
                 {
                     model: Subcategories,
-                    attributes: { exclude: ["createdAt", "updatedAt"] },
+                    attributes: { exclude: ["categoryId", "uuid", "createdAt", "updatedAt"] },
                 },
             ],
         });
@@ -64,7 +66,7 @@ export const updateCategory = async (req, res) => {
         }
         category.name = name;
         await category.save();
-        return res.status(200).json(category);
+        return res.status(200).json( {message: "Category updated successfully" });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

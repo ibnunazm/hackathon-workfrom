@@ -2,7 +2,11 @@ import facilities from "../models/FacilitiesModel.js";
 
 export const getFacilities = async (req, res) => {
     try {
-        const facility = await facilities.findAll();
+        const facility = await facilities.findAll(
+            {
+                attributes: { exclude: ["uuid", "createdAt", "updatedAt"] },
+            }
+        );
         return res.status(200).json(facility);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -12,6 +16,7 @@ export const getFacilities = async (req, res) => {
 export const getFacilityById = async (req, res) => {
     try {
         const facility = await facilities.findOne({
+            attributes: { exclude: ["uuid", "createdAt", "updatedAt"] },
             where: {
                 id: req.params.id,
             },
@@ -26,10 +31,10 @@ export const getFacilityById = async (req, res) => {
 };
 
 export const createFacility = async (req, res) => {
-    const { name, distance } = req.body;
+    const { optionName, distance } = req.body;
     try {
         await facilities.create({
-            name,
+            optionName,
             distance
         });
         return res.status(201).json({ message: "Facility created successfully" });
@@ -39,7 +44,7 @@ export const createFacility = async (req, res) => {
 };
 
 export const updateFacility = async (req, res) => {
-    const { name, distance } = req.body;
+    const { optionName, distance } = req.body;
     try {
         const facility = await facilities.findOne({
             where: {
@@ -50,7 +55,7 @@ export const updateFacility = async (req, res) => {
             return res.status(404).json({ message: "Facility not found" });
         }
         await facilities.update({
-            name,
+            optionName,
             distance
         }, {
             where: {

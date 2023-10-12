@@ -2,7 +2,9 @@ import Time from "../models/TimeModel.js";
 
 export const getTime = async (req, res) => {
     try {
-        const time = await Time.findAll();
+        const time = await Time.findAll({
+            attributes: { exclude: ["uuid", "createdAt", "updatedAt"] },
+        });
         return res.status(200).json(time);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -12,6 +14,7 @@ export const getTime = async (req, res) => {
 export const getTimeById = async (req, res) => {
     try {
         const time = await Time.findOne({
+            attributes: { exclude: ["uuid", "createdAt", "updatedAt"] },
             where: {
                 id: req.params.id,
             },

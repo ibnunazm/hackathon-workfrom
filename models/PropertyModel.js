@@ -20,36 +20,42 @@ const Properties = db.define('properties', {
     },
     userId:{
         type: DataTypes.INTEGER,
+        allowNull: false,
         validate: {
             notEmpty: true,
         }
     },
     categoryId:{
         type: DataTypes.INTEGER,
+        allowNull: false,
         validate: {
             notEmpty: true,
         }
     },
     subcategoryId:{
         type: DataTypes.INTEGER,
+        allowNull: false,
         validate: {
             notEmpty: true,
         }
     },
     timeId:{
         type: DataTypes.INTEGER,
+        allowNull: false,
         validate: {
             notEmpty: true,
         }
     },
     amenityId:{
         type: DataTypes.INTEGER,
+        allowNull: false,
         validate: {
             notEmpty: true,
         }
     },
     facilityId:{
         type: DataTypes.INTEGER,
+        allowNull: false,
         validate: {
             notEmpty: true,
         }
@@ -76,6 +82,13 @@ const Properties = db.define('properties', {
             notEmpty: true,
         }
     },
+    district: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+        }
+    },
     address: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -90,15 +103,15 @@ const Properties = db.define('properties', {
             notEmpty: true,
         }
     },
-    price: {
+    roomSize: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             notEmpty: true,
         }
     },
-    description: {
-        type: DataTypes.STRING,
+    price: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             notEmpty: true,

@@ -2,7 +2,10 @@ import Amenities from "../models/AmenitiesModel.js";
 
 export const getAmenities = async (req, res) => {
     try {
-        const amenities = await Amenities.findAll();
+        const amenities = await Amenities.findAll({
+            attributes: { exclude: ["uuid", "createdAt", "updatedAt"] },
+        }
+        );
         res.status(200).json(amenities);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -12,6 +15,7 @@ export const getAmenities = async (req, res) => {
 export const getAmenityById = async (req, res) => {
     try {
         const amenity = await Amenities.findOne({
+            attributes: { exclude: ["uuid", "createdAt", "updatedAt"] },
             where: {
                 id: req.params.id,
             },
@@ -26,10 +30,10 @@ export const getAmenityById = async (req, res) => {
 };
 
 export const createAmenity = async (req, res) => {
-    const { name } = req.body;
+    const { optionName } = req.body;
     try {
         await Amenities.create({
-            name,
+            optionName,
         });
         return res.status(201).json({ message: "Amenity created successfully" });
     } catch (error) {
@@ -38,7 +42,7 @@ export const createAmenity = async (req, res) => {
 };
 
 export const updateAmenity = async (req, res) => {
-    const { name } = req.body;
+    const { optionName } = req.body;
     try {
         const amenity = await Amenities.findOne({
             where: {
@@ -49,7 +53,7 @@ export const updateAmenity = async (req, res) => {
             return res.status(404).json({ message: "Amenity not found" });
         }
         await Amenities.update({
-            name,
+            optionName,
         }, {
             where: {
                 id: req.params.id,

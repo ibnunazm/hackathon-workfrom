@@ -13,6 +13,9 @@ import SubcategoryRoute from './routes/SubcategoryRoute.js';
 import TimeRoute from './routes/TimeRoute.js';
 import FacilitiesRoute from './routes/FacilitiesRoute.js';
 import AmenitiesRoute from './routes/AmenitiesRoute.js';
+import PropertiesAmenitiesRoute from './routes/PropertiesAmenitiesRoute.js';
+import PropertiesFacilitiesRoute from './routes/PropertiesFacilitiesRoute.js';
+import TransactionsRoute from './routes/TransactionsRoute.js';
 
 dotenv.config()
 
@@ -52,6 +55,9 @@ app.use(SubcategoryRoute);
 app.use(TimeRoute);
 app.use(FacilitiesRoute);
 app.use(AmenitiesRoute);
+app.use(PropertiesAmenitiesRoute);
+app.use(PropertiesFacilitiesRoute);
+app.use(TransactionsRoute);
 
 store.sync();
 

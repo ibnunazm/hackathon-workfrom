@@ -21,7 +21,7 @@ export const Login = async (req, res) => {
     const email = user.email;
     const role = user.role;
     const phoneNumber = user.phoneNumber;
-    res.status(200).json({ uuid, name, email, phoneNumber, role });
+    res.status(200).json({name, email, role });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -32,7 +32,7 @@ export const getUserLogin = async (req, res) => {
     return res.status(401).json({ message: "Unauthorized" });
   }
   const user = await Users.findOne({
-    attributes: { exclude: ["id", "password"] },
+    attributes: { exclude: ["id", "uuid", "phoneNumber", "password", "createdAt", "updatedAt"]},
     where: {
       uuid: req.session.userId,
     },

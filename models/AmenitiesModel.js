@@ -12,14 +12,14 @@ const Amenities = db.define('amenities', {
             notEmpty: true,
         }
     },
-    name: {
+    optionName: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true,
             len: [3, 100]
         }
-    }
+    },
 }, {
     freezeTableName: true,
 });

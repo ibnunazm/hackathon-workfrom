@@ -4,10 +4,11 @@ import Categories from "../models/CategoryModel.js";
 export const getSubcategories = async (req, res) => {
     try {
         const response = await Subcategories.findAll({
+            attributes: { exclude: ["uuid", "createdAt", "updatedAt", "categoryId"] },
             include: [
                 {
                     model: Categories,
-                    attributes: { exclude: ["createdAt", "updatedAt"] },
+                    attributes: { exclude: ["uuid", "createdAt", "updatedAt"] },
                 },
             ],
         });
@@ -23,10 +24,11 @@ export const getSubcategoryById = async (req, res) => {
             where: {
                 id: req.params.id,
             },
+            attributes: { exclude: ["uuid", "createdAt", "updatedAt", "categoryId"] },
             include: [
                 {
                     model: Categories,
-                    attributes: { exclude: ["createdAt", "updatedAt"] },
+                    attributes: { exclude: ["uuid", "createdAt", "updatedAt"] },
                 },
             ],
         });
