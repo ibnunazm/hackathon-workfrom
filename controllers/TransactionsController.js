@@ -1,8 +1,29 @@
+import Time from "../models/TimeModel.js";
 import Transactions from "../models/TransactionModel.js";
+import Properties from "../models/PropertyModel.js";
+import Users from "../models/UserModel.js";
 
 export const getTransactions = async (req, res) => {
   try {
-    const transactions = await Transactions.findAll();
+    const transactions = await Transactions.findAll({
+      attributes: ["id", "duration", "totalPrice", "startDate", "endDate"],
+      include: [
+        {
+          model: Properties,
+          attributes: ["name", "price"],
+          include: [
+            {
+              model: Time,
+              attributes: ["name"],
+            },
+          ],
+        },
+        {
+          model: Users,
+          attributes: ["name"],
+        }
+      ],
+    });
     res.status(200).json(transactions);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -15,6 +36,23 @@ export const getTransactionById = async (req, res) => {
       where: {
         id: req.params.id,
       },
+      attributes: ["id", "duration", "totalPrice", "startDate", "endDate"],
+      include: [
+        {
+          model: Properties,
+          attributes: ["name", "price"],
+          include: [
+            {
+              model: Time,
+              attributes: ["name"],
+            },
+          ],
+        },
+        {
+          model: Users,
+          attributes: ["name"],
+        }
+      ],
     });
     if (!transaction) {
       return res.status(404).json({ message: "Transaction not found" });
@@ -26,13 +64,47 @@ export const getTransactionById = async (req, res) => {
 };
 
 export const createTransaction = async (req, res) => {
-  const { propertyId, customerId, ownerId, paymentId, amount } = req.body;
+  const { propertyId, userId, duration, startDate } = req.body;
+
+  const newStartDate = new Date(startDate);
+
+  const property = await Properties.findByPk(propertyId);
+  if (!property) {
+    return res.status(404).json({ message: "Property not found" });
+  }
+  const timeId = property.timeId;
+  const time = await Time.findByPk(timeId);
+  if (!time) {
+    return res.status(404).json({ message: "Time not found" });
+  }
+  
+  const totalPrice = property.price * duration;
+
+  let endDate;
+  if(time.name === "Day"){
+    endDate = new Date(
+      newStartDate.getTime() + duration * 24 * 60 * 60 * 1000
+    );
+  }else if(time.name === "Month"){
+    endDate = new Date(
+      newStartDate.getTime() + duration * 30 * 24 * 60 * 60 * 1000
+    );
+  }else if(time.name === "Year"){
+    endDate = new Date(
+      newStartDate.getTime() + duration * 365 * 24 * 60 * 60 * 1000
+    );
+  }else{
+    return res.status(404).json({ message: "Time not found" });
+  }
+
   try {
     await Transactions.create({
       propertyId,
-      customerId,
-      totalTime,
-      startDate,
+      userId,
+      duration,
+      startDate: newStartDate,
+      endDate,
+      totalPrice,
     });
     return res
       .status(201)
@@ -43,7 +115,39 @@ export const createTransaction = async (req, res) => {
 };
 
 export const updateTransaction = async (req, res) => {
-  const { propertyId, customerId, ownerId, paymentId, amount } = req.body;
+  const { propertyId, userId, duration, startDate } = req.body;
+
+  const newStartDate = new Date(startDate);
+
+  const property = await Properties.findByPk(propertyId);
+  if (!property) {
+    return res.status(404).json({ message: "Property not found" });
+  }
+  const timeId = property.timeId;
+  const time = await Time.findByPk(timeId);
+  if (!time) {
+    return res.status(404).json({ message: "Time not found" });
+  }
+  
+  const totalPrice = property.price * duration;
+
+  let endDate;
+  if(time.name === "Day"){
+    endDate = new Date(
+      newStartDate.getTime() + duration * 24 * 60 * 60 * 1000
+    );
+  }else if(time.name === "Month"){
+    endDate = new Date(
+      newStartDate.getTime() + duration * 30 * 24 * 60 * 60 * 1000
+    );
+  }else if(time.name === "Year"){
+    endDate = new Date(
+      newStartDate.getTime() + duration * 365 * 24 * 60 * 60 * 1000
+    );
+  }else{
+    return res.status(404).json({ message: "Time not found" });
+  }
+
   try {
     const transaction = await Transactions.findOne({
       where: {
@@ -56,9 +160,11 @@ export const updateTransaction = async (req, res) => {
     await Transactions.update(
       {
         propertyId,
-        customerId,
-        totalTime,
-        startDate,
+        userId,
+        duration,
+        startDate: newStartDate,
+        endDate,
+        totalPrice,
       },
       {
         where: {

@@ -28,7 +28,14 @@ const Transactions = db.define('Transactions', {
             notEmpty: true,
         }
     },
-    totalTime:{
+    duration:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+        }
+    },
+    totalPrice:{
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -48,7 +55,7 @@ const Transactions = db.define('Transactions', {
         validate: {
             notEmpty: true,
         }
-    }
+    },
 }, {
     freezeTableName: true,
 });
