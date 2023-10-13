@@ -21,7 +21,7 @@ export const getTransactions = async (req, res) => {
         {
           model: Users,
           attributes: ["name"],
-        }
+        },
       ],
     });
     res.status(200).json(transactions);
@@ -51,7 +51,7 @@ export const getTransactionById = async (req, res) => {
         {
           model: Users,
           attributes: ["name"],
-        }
+        },
       ],
     });
     if (!transaction) {
@@ -77,33 +77,38 @@ export const createTransaction = async (req, res) => {
   if (!time) {
     return res.status(404).json({ message: "Time not found" });
   }
-  
+
   const totalPrice = property.price * duration;
 
   let endDate;
-  if(time.name === "Day"){
-    endDate = new Date(
-      newStartDate.getTime() + duration * 24 * 60 * 60 * 1000
-    );
-  }else if(time.name === "Month"){
+  if (time.name === "Day") {
+    endDate = new Date(newStartDate.getTime() + duration * 24 * 60 * 60 * 1000);
+  } else if (time.name === "Month") {
     endDate = new Date(
       newStartDate.getTime() + duration * 30 * 24 * 60 * 60 * 1000
     );
-  }else if(time.name === "Year"){
+  } else if (time.name === "Year") {
     endDate = new Date(
       newStartDate.getTime() + duration * 365 * 24 * 60 * 60 * 1000
     );
-  }else{
+  } else {
     return res.status(404).json({ message: "Time not found" });
   }
+
+  var year = endDate.getFullYear();
+  var month = (endDate.getMonth() + 1).toString().padStart(2, "0");
+  var day = endDate.getDate().toString().padStart(2, "0");
+
+  var endDateString = year + "-" + month + "-" + day;
+
 
   try {
     await Transactions.create({
       propertyId,
       userId,
       duration,
-      startDate: newStartDate,
-      endDate,
+      startDate,
+      endDate: endDateString,
       totalPrice,
     });
     return res
@@ -128,25 +133,29 @@ export const updateTransaction = async (req, res) => {
   if (!time) {
     return res.status(404).json({ message: "Time not found" });
   }
-  
+
   const totalPrice = property.price * duration;
 
   let endDate;
-  if(time.name === "Day"){
-    endDate = new Date(
-      newStartDate.getTime() + duration * 24 * 60 * 60 * 1000
-    );
-  }else if(time.name === "Month"){
+  if (time.name === "Day") {
+    endDate = new Date(newStartDate.getTime() + duration * 24 * 60 * 60 * 1000);
+  } else if (time.name === "Month") {
     endDate = new Date(
       newStartDate.getTime() + duration * 30 * 24 * 60 * 60 * 1000
     );
-  }else if(time.name === "Year"){
+  } else if (time.name === "Year") {
     endDate = new Date(
       newStartDate.getTime() + duration * 365 * 24 * 60 * 60 * 1000
     );
-  }else{
+  } else {
     return res.status(404).json({ message: "Time not found" });
   }
+
+  var year = endDate.getFullYear();
+  var month = (endDate.getMonth() + 1).toString().padStart(2, "0");
+  var day = endDate.getDate().toString().padStart(2, "0");
+
+  var endDateString = year + "-" + month + "-" + day;
 
   try {
     const transaction = await Transactions.findOne({
@@ -162,8 +171,8 @@ export const updateTransaction = async (req, res) => {
         propertyId,
         userId,
         duration,
-        startDate: newStartDate,
-        endDate,
+        startDate,
+        endDate: endDateString,
         totalPrice,
       },
       {

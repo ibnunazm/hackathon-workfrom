@@ -43,14 +43,14 @@ const Transactions = db.define('Transactions', {
         }
     },
     startDate:{
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true,
         }
     },
     endDate:{
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true,

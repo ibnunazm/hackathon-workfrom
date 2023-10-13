@@ -3,7 +3,9 @@ import PropertiesAmenities from '../models/PropertiesAmenitiesModel.js';
 
 export const getPropertiesAmenities = async (req, res) => {
     try {
-        const propertiesAmenities = await PropertiesAmenities.findAll();
+        const propertiesAmenities = await PropertiesAmenities.findAll({
+            attributes:{exclude:["uuid", "createdAt", "updatedAt"]},
+        });
         res.status(200).json(propertiesAmenities);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -13,6 +15,7 @@ export const getPropertiesAmenities = async (req, res) => {
 export const getPropertiesAmenitiesById = async (req, res) => {
     try {
         const propertiesAmenities = await PropertiesAmenities.findOne({
+            
             where: {
                 id: req.params.id,
             },
