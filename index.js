@@ -16,6 +16,7 @@ import AmenitiesRoute from './routes/AmenitiesRoute.js';
 import PropertiesAmenitiesRoute from './routes/PropertiesAmenitiesRoute.js';
 import PropertiesFacilitiesRoute from './routes/PropertiesFacilitiesRoute.js';
 import TransactionsRoute from './routes/TransactionsRoute.js';
+import ReviewsRoute from './routes/ReviewsRoute.js';
 
 dotenv.config()
 
@@ -58,6 +59,7 @@ app.use(AmenitiesRoute);
 app.use(PropertiesAmenitiesRoute);
 app.use(PropertiesFacilitiesRoute);
 app.use(TransactionsRoute);
+app.use(ReviewsRoute);
 
 store.sync();
 
