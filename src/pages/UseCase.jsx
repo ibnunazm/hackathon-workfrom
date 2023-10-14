@@ -3,10 +3,15 @@ import properties1 from '../assets/properties1.png';
 import cardBuilding from '../assets/cardBuilding.png';
 import cardCapacity from '../assets/cardCapacity.png';
 import cardLocation from '../assets/cardLocation.png';
+import bca from '../assets/bca.png';
+import bri from '../assets/bri.png';
+import bni from '../assets/bni.png';
+import mandiri from '../assets/mandiri.png';
 import detailProperties from '../assets/detailProperties.png';
 import dot from '../assets/dot.png';
-import { Select, Option, Dialog, IconButton, DialogBody, Card, Typography } from "@material-tailwind/react";
-import { Slider } from 'antd';
+import { Select, Option, Dialog, IconButton, DialogBody, Card, Typography, Radio } from "@material-tailwind/react";
+import { Slider, DatePicker, Input } from 'antd';
+import Swal from 'sweetalert2'; // Import SweetAlert
 
 const cardData = [
     {
@@ -118,7 +123,7 @@ function UseCase() {
     const maxPrice = Math.max(...cardData.map((item) => item.price));
     const [minCapacity, setMinCapacity] = useState(0);
     const [maxCapacity, setMaxCapacity] = useState(Math.max(...cardData.map((item) => item.capacity)));
-
+    const [openBookNow, setOpenBookNow] = useState(false);
 
     const [priceRange, setPriceRange] = useState([minPrice, maxPrice]);
     const [selectedDuration, setSelectedDuration] = useState('all');
@@ -130,6 +135,9 @@ function UseCase() {
         // Use the toLocaleString method to add commas and format the number
         return number.toLocaleString('en-US');
     }
+    const onChange = (date, dateString) => {
+        console.log(date, dateString);
+    };
     useEffect(() => {
         const filtered = cardData.filter((data) => {
             const isPriceWithinRange = data.price >= priceRange[0] && data.price <= priceRange[1];
@@ -148,6 +156,23 @@ function UseCase() {
     // Function to handle opening and closing the modal
     const handleOpenDetail = () => {
         setOpenDetail(!openDetail);
+    };
+    const handleOpenBookNow = () => {
+        setOpenBookNow(!openBookNow);
+    };
+    const handleOpenBookNowAlert = () => {
+        setOpenBookNow(!openBookNow);
+
+        if (openBookNow) {
+            // If the modal is closing, show the success message
+            Swal.fire({
+                icon: 'success',
+                title: 'Booking Successful',
+                text: 'Your booking has been confirmed.',
+                showConfirmButton: false,
+                timer: 2000, // 3 seconds
+            });
+        }
     };
     return (
 
@@ -241,6 +266,10 @@ function UseCase() {
                                 <img src={properties1} alt="properties1" />
                             </div>
                             <div className='p-[16px] pb-6 flex flex-col gap-2'>
+                                <div className='flex gap-2'>
+                                    <p className='bg-[#AFF78D] py-1 px-3 rounded-lg'> {data.category}</p>
+                                    <p className='bg-[#AFF78D] py-1 px-3 rounded-lg'> {data.subCategory}</p>
+                                </div>
                                 <h1 className='font-[600] text-[22px]'>{data.title}</h1>
                                 <div className="flex font-[500] text-[12px] gap-2">
                                     <div className="flex gap-2">
@@ -268,7 +297,7 @@ function UseCase() {
                                     <button className='rounded-lg border border-black py-2 w-full' onClick={handleOpenDetail}>
                                         See Details
                                     </button>
-                                    <button className='rounded-lg bg-black text-white py-2 w-full'>Book Now</button>
+                                    <button className='rounded-lg bg-black text-white py-2 w-full' onClick={handleOpenBookNow}>Book Now</button>
                                 </div>
                             </div>
                         </div>
@@ -408,12 +437,114 @@ function UseCase() {
                                 </div>
                                 <hr />
                                 <div className='flex justify-between px-2 items-center'>
-                                    <p className='font-[600] text-[20px]'>Rp. 1,400,000<span  className='font-[500] text-[14px]'>/per-day</span></p>
+                                    <p className='font-[600] text-[20px]'>Rp. 1,400,000<span className='font-[500] text-[14px]'>/per-day</span></p>
                                     <div>
-                                        <button className="py-2 px-10 rounded-md bg-[#AFF78D] text-[18px] font-[500] text-black">Book Now</button>
+                                        <button className="py-2 px-10 rounded-md bg-[#AFF78D] text-[18px] font-[500] text-black" onClick={handleOpenBookNow}>Book Now</button>
                                     </div>
                                 </div>
                             </div>
+                        </Card>
+                    </DialogBody>
+                </Dialog>
+                <Dialog open={openBookNow} handler={handleOpenBookNow}>
+                    <div className="flex justify-between items-center">
+                        <IconButton
+                            variant="text"
+                            color="black"
+                            onClick={handleOpenBookNow}
+                            ripple={false}
+                            className="hover-bg-transparent focus-bg-transparent active-bg-transparent z-10"
+                            style={{ position: 'absolute', top: '10px', right: '10px' }}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-6 w-6"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            </svg>
+                        </IconButton>
+                    </div>
+                    <DialogBody divider>
+                        <Card color="transparent" shadow={false} className='text-black'>
+                            <Typography variant="h4" color="blue-gray">
+                                Book properties
+                            </Typography>
+                            <Typography color="gray" className="mt-1 font-normal">
+                                Select payment option and start date
+                            </Typography>
+                            <div className="flex flex-col gap-2 mt-9">
+                                <Radio
+                                    name="terms"
+                                    label={
+                                        <Typography color="blue-gray" className="flex items-center font-medium">
+                                            <div className='w-28'>
+                                                <div className='w-[80px]'>
+                                                    <img src={bca} alt="" />
+                                                </div>
+                                            </div>
+                                            <span>Bank BCA</span>
+                                        </Typography>
+                                    }
+                                />
+                                <Radio
+                                    name="terms"
+                                    label={
+                                        <Typography color="blue-gray" className="flex items-center font-medium">
+                                            <div className='w-28'>
+                                                <div className='w-[80px]'>
+                                                    <img src={bni} alt="" />
+                                                </div>
+                                            </div>
+                                            <span>Bank BNI</span>
+                                        </Typography>
+                                    }
+                                />
+                                <Radio
+                                    name="terms"
+                                    label={
+                                        <Typography color="blue-gray" className="flex items-center font-medium">
+                                            <div className='w-28'>
+                                                <div className='w-[100px]'>
+                                                    <img src={mandiri} alt="" />
+                                                </div>
+                                            </div>
+                                            <span>Bank Mandiri</span>
+                                        </Typography>
+                                    }
+                                />
+                                <Radio
+                                    name="terms"
+                                    label={
+                                        <Typography color="blue-gray" className="flex items-center font-medium">
+                                            <div className='w-28'>
+                                                <div className='w-[75px]'>
+                                                    <img src={bri} alt="" />
+                                                </div>
+                                            </div>
+                                            <span>Bank BRI</span>
+                                        </Typography>
+                                    }
+                                />
+                            </div>
+                            <div className='flex gap-10 mt-7 ml-4'>
+                                <div>
+                                    <p className='mb-2'>Start Date</p>
+                                    <DatePicker onChange={onChange} />
+                                </div>
+                                <div>
+                                    <p className='mb-2'>Duration</p>
+                                    <Input />
+                                </div>
+                            </div>
+                            <button className='bg-[#AFF78D] rounded-lg py-2 mt-7 font-semibold' onClick={handleOpenBookNowAlert}>Confirm</button>
                         </Card>
                     </DialogBody>
                 </Dialog>

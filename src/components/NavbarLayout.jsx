@@ -105,7 +105,6 @@ function ProfileMenu({ onSignOut }) {
 
 function NavbarLayout() {
     const [openNav, setOpenNav] = useState(false);
-
     const [openLogin, setOpenLogin] = useState(false);
     const [openRegist, setOpenRegist] = useState(false);
     const [name, setName] = useState('');
@@ -445,6 +444,7 @@ function NavbarLayout() {
                     </Card>
                 </DialogBody>
             </Dialog>
+
         </div>
     );
 }
